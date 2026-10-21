@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
 function Eligibility() {
   const [age, setAge] = useState('');
   const [qualification, setQualification] = useState('Graduation (Any)');
@@ -13,7 +15,7 @@ function Eligibility() {
 
   // Page khulte hi Backend (MongoDB) se saari Sarkari Jobs le aao
   useEffect(() => {
-    fetch('http://localhost:5001/api/jobs')
+    fetch(`${API_URL}/api/jobs`)
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -31,7 +33,7 @@ function Eligibility() {
   // Job Save karne ka function
   const handleSaveJob = async (jobTitle) => {
     try {
-      const res = await fetch('http://localhost:5001/api/user/save-job', {
+      const res = await fetch(`${API_URL}/api/user/save-job`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ jobTitle })
@@ -51,7 +53,7 @@ function Eligibility() {
   // Job Apply karne ka function
   const handleApplyJob = async (jobTitle) => {
     try {
-      const res = await fetch('http://localhost:5001/api/user/apply-job', {
+      const res = await fetch(`${API_URL}/api/user/apply-job`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ jobTitle })

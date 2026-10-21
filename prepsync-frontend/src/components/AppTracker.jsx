@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
 function AppTracker() {
   const [trackedJobs, setTrackedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -8,7 +10,7 @@ function AppTracker() {
   // Database se user ki applied/tracked jobs fetch karna
   const fetchTrackedJobs = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/user/saved-jobs');
+      const response = await fetch(`${API_URL}/api/user/saved-jobs`);
       const data = await response.json();
       if (data.success) {
         // Saved aur Applied dono ko combine karke table ke liye prepare karte hain
@@ -31,7 +33,7 @@ function AppTracker() {
   // Job ko tracker se remove karne ka function (Instant UI update ke sath)
   const handleRemove = async (jobTitle) => {
     try {
-      const response = await fetch('http://localhost:5001/api/user/remove-job', {
+      const response = await fetch(`${API_URL}/api/user/remove-job`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ jobTitle })

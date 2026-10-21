@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
 function DocumentVault() {
   const [documents, setDocuments] = useState({
     aadhar: "", photo: "", signature: "", tenthMarksheet: "", twelfthMarksheet: "", marksheet: "",
@@ -10,7 +12,7 @@ function DocumentVault() {
 
   // Page khulte hi backend se saved documents fetch karna
   useEffect(() => {
-    fetch('http://localhost:5001/api/user/profile')
+    fetch(`${API_URL}/api/user/profile`)
       .then(res => res.json())
       .then(data => {
         if (data.success && data.user && data.user.documents) {
@@ -26,7 +28,7 @@ function DocumentVault() {
     setLoadingDoc(docId);
     
     try {
-      const response = await fetch('http://localhost:5001/api/user/upload-doc', {
+      const response = await fetch(`${API_URL}/api/user/upload-doc`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ docType: docId, fileName: fileName })

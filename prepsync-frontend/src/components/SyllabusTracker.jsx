@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
 function SyllabusTracker() {
   const [syllabus, setSyllabus] = useState([
     { id: 1, title: 'Quantitative Aptitude (Maths)', total: 25, completed: 12 },
@@ -10,28 +12,26 @@ function SyllabusTracker() {
   ]);
   const [loading, setLoading] = useState(false);
 
-  // Backend se user ka saved progress fetch karna (Optional agar user profile mein save ho)
+  // Backend se user ka saved progress fetch karna
   useEffect(() => {
-    fetch('http://localhost:5001/api/user/profile')
+    fetch(`${API_URL}/api/user/profile`)
       .then(res => res.json())
       .then(data => {
         if (data.success && data.user && data.user.completedModules) {
-          // Agar database mein completed modules hain toh unke counts update kar sakte hain
           console.log("User progress loaded:", data.user.completedModules);
         }
       })
       .catch(err => console.log('Profile fetch error:', err));
   }, []);
 
-  // Progress update karne ka function (Database integration ke sath)
+  // Progress update karne ka function
   const handleUpdateProgress = async (subTitle, currentCompleted, total) => {
-    // Increment completion by 1, or reset to 0 if full
     const newCompleted = currentCompleted >= total ? 0 : currentCompleted + 1;
     const isCompleted = newCompleted > currentCompleted;
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5001/api/user/update-syllabus', {
+      const response = await fetch(`${API_URL}/api/user/update-syllabus`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -44,7 +44,6 @@ function SyllabusTracker() {
       
       if (data.success) {
         toast.success(`${subTitle} progress updated! 📈`);
-        // Local state update karo taaki UI turant badle
         setSyllabus(prev => prev.map(sub => 
           sub.title === subTitle ? { ...sub, completed: newCompleted } : sub
         ));

@@ -23,7 +23,7 @@ function AdminAddJob() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5001/api/admin/add-job', {
+      const response = await fetch('https://apka-render-backend-url.onrender.com/api/admin/add-job', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

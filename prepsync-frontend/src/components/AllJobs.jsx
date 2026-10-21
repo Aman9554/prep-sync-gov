@@ -12,7 +12,7 @@ function AllJobs() {
 
   const fetchJobs = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/jobs'); // Ensure karo ki backend par GET jobs route hai
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/jobs`);
       const data = await response.json();
       if (data.success || Array.isArray(data)) {
         setJobs(data.jobs || data);

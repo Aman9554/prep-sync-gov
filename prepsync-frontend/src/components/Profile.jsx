@@ -13,7 +13,7 @@ function Profile() {
 
   useEffect(() => {
     // Backend se user data fetch karne ka logic (abhi ke liye dummy data)
-    fetch('http://localhost:5001/api/user/profile')
+    fetch('https://apka-render-backend-url.onrender.com/api/user/profile')
       .then(res => res.json())
       .then(data => {
         if (data.success && data.user) {
